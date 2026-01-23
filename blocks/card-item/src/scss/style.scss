@@ -31,6 +31,11 @@
 			align-items: center;
 			justify-content: center;
 			min-height: 80px;
+			
+			// Hide icon container when empty
+			&:empty {
+				display: none;
+			}
 		}
 		
 		// Title

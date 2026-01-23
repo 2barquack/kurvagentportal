@@ -8,7 +8,13 @@
 .wp-block-kurv-knowledgebase-2026-card-manager {
 	.card-manager-wrapper {
 		padding: 4rem 2rem;
-		background-color: #f0f7f0; // Light green background
+		background-color: #f0f7f0; // Light green background (default)
+		
+		// Make background transparent when inside a group block
+		.wp-block-group & {
+			background-color: transparent;
+			padding: 0; // Remove padding as group handles it
+		}
 		
 		// Heading styles
 		.card-manager-heading {
@@ -34,6 +40,16 @@
 			.heading-text {
 				white-space: nowrap;
 			}
+		}
+		
+		// Intro paragraph
+		.card-manager-intro {
+			text-align: center;
+			max-width: 800px;
+			margin: 0 auto 3rem;
+			color: #4a4a4a;
+			font-size: 1rem;
+			line-height: 1.6;
 		}
 		
 		// Card container

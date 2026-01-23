@@ -7,14 +7,14 @@
 
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls, RichText, InnerBlocks } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, SelectControl } from '@wordpress/components';
+import { PanelBody, RangeControl, SelectControl, TextareaControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import metadata from '../block.json';
 
 registerBlockType( metadata.name, {
 	...metadata,
 	edit: ( { attributes, setAttributes } ) => {
-		const { heading, headingLevel, columns } = attributes;
+		const { heading, headingLevel, columns, introParagraph } = attributes;
 		const blockProps = useBlockProps( {
 			className: 'card-manager-wrapper',
 			'data-columns': columns,
@@ -47,6 +47,15 @@ registerBlockType( metadata.name, {
 							onChange={ ( value ) => setAttributes( { headingLevel: parseInt( value ) } ) }
 						/>
 					</PanelBody>
+					<PanelBody title={ __( 'Intro Paragraph', 'kurv-knowledgebase-2026' ) }>
+						<TextareaControl
+							label={ __( 'Introductory Paragraph (Optional)', 'kurv-knowledgebase-2026' ) }
+							value={ introParagraph }
+							onChange={ ( value ) => setAttributes( { introParagraph: value } ) }
+							placeholder={ __( 'Enter introductory paragraph...', 'kurv-knowledgebase-2026' ) }
+							help={ __( 'This paragraph will appear between the heading and the cards.', 'kurv-knowledgebase-2026' ) }
+						/>
+					</PanelBody>
 				</InspectorControls>
 
 				<div { ...blockProps }>
@@ -62,6 +71,17 @@ registerBlockType( metadata.name, {
 						<span className="heading-line heading-line-bottom"></span>
 					</HeadingTag>
 					
+					{ introParagraph && (
+						<p className="card-manager-intro">
+							<RichText
+								tagName="span"
+								value={ introParagraph }
+								onChange={ ( value ) => setAttributes( { introParagraph: value } ) }
+								placeholder={ __( 'Enter introductory paragraph...', 'kurv-knowledgebase-2026' ) }
+							/>
+						</p>
+					) }
+					
 					<div className="card-manager-container">
 						<InnerBlocks
 							allowedBlocks={ [ 'kurv-knowledgebase-2026/card-item' ] }
@@ -73,7 +93,30 @@ registerBlockType( metadata.name, {
 			</>
 		);
 	},
-	save: () => {
-		return <InnerBlocks.Content />;
+	save: ( { attributes } ) => {
+		const { heading, headingLevel, introParagraph, columns } = attributes;
+		const HeadingTag = `h${ headingLevel }`;
+		const blockProps = useBlockProps.save( {
+			className: 'card-manager-wrapper',
+			'data-columns': columns,
+		} );
+		
+		return (
+			<div { ...blockProps }>
+				{ heading && (
+					<HeadingTag className="card-manager-heading">
+						<span className="heading-line heading-line-top"></span>
+						<span className="heading-text">{ heading }</span>
+						<span className="heading-line heading-line-bottom"></span>
+					</HeadingTag>
+				) }
+				{ introParagraph && (
+					<p className="card-manager-intro">{ introParagraph }</p>
+				) }
+				<div className="card-manager-container">
+					<InnerBlocks.Content />
+				</div>
+			</div>
+		);
 	},
 } );

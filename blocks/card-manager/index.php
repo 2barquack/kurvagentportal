@@ -10,6 +10,7 @@
 $heading      = isset( $attributes['heading'] ) ? $attributes['heading'] : 'Core Platform Capabilities';
 $heading_level = isset( $attributes['headingLevel'] ) ? $attributes['headingLevel'] : 2;
 $columns      = isset( $attributes['columns'] ) ? $attributes['columns'] : 3;
+$intro_paragraph = isset( $attributes['introParagraph'] ) ? $attributes['introParagraph'] : '';
 
 // Wrapper attributes
 $wrapper_attributes = get_block_wrapper_attributes(
@@ -30,6 +31,10 @@ $heading_tag = 'h' . $heading_level;
 			<span class="heading-text"><?php echo esc_html( $heading ); ?></span>
 			<span class="heading-line heading-line-bottom"></span>
 		</<?php echo esc_attr( $heading_tag ); ?>>
+	<?php endif; ?>
+	
+	<?php if ( ! empty( $intro_paragraph ) ) : ?>
+		<p class="card-manager-intro"><?php echo esc_html( $intro_paragraph ); ?></p>
 	<?php endif; ?>
 	
 	<div class="card-manager-container">
