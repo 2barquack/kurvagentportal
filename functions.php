@@ -190,3 +190,30 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_format_binding' ) ) :
 		}
 	}
 endif;
+
+// Registers custom blocks.
+if ( ! function_exists( 'kurv_knowledgebase_2026_register_blocks' ) ) :
+	/**
+	 * Registers custom Gutenberg blocks.
+	 *
+	 * @since Kurv Knowledgebase 2026 1.0
+	 *
+	 * @return void
+	 */
+	function kurv_knowledgebase_2026_register_blocks() {
+		$blocks = array(
+			'card-manager',
+			'card-item',
+		);
+
+		foreach ( $blocks as $block ) {
+			register_block_type(
+				get_template_directory() . '/blocks/' . $block,
+				array(
+					'render_callback' => null,
+				)
+			);
+		}
+	}
+endif;
+add_action( 'init', 'kurv_knowledgebase_2026_register_blocks' );

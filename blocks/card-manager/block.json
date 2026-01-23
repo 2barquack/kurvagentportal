@@ -1,0 +1,78 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "kurv-knowledgebase-2026/card-manager",
+	"title": "Card Manager",
+	"category": "design",
+	"icon": "grid-view",
+	"description": "A flexible card manager that allows you to add, remove, and manage multiple cards with icons, titles, and descriptions.",
+	"keywords": ["cards", "grid", "layout", "manager"],
+	"textdomain": "kurv-knowledgebase-2026",
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"],
+		"alignWide": true,
+		"anchor": true,
+		"color": {
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"margin": true,
+				"padding": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"color": true,
+				"radius": true,
+				"width": true
+			}
+		},
+		"dimensions": {
+			"minHeight": true
+		},
+		"__experimentalSelector": ".wp-block-kurv-knowledgebase-2026-card-manager"
+	},
+	"attributes": {
+		"heading": {
+			"type": "string",
+			"default": "Core Platform Capabilities"
+		},
+		"headingLevel": {
+			"type": "number",
+			"default": 2
+		},
+		"columns": {
+			"type": "number",
+			"default": 3
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

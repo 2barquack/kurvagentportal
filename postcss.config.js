@@ -5,4 +5,6 @@ export default {
 		'autoprefixer': {},
 		'cssnano': process.env.NODE_ENV === 'production' ? {} : false,
 	},
+	// Enable SCSS support via Vite's CSS preprocessor
+	parser: false,
 };

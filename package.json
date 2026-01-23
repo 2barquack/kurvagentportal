@@ -32,8 +32,9 @@
 	],
 	"scripts": {
 		"dev": "vite",
-		"build": "vite build && npm run build:minify-css",
+		"build": "vite build && npm run build:minify-css && npm run build:blocks",
 		"build:minify-css": "node scripts/minify-css.js",
+		"build:blocks": "node blocks/build-blocks.js",
 		"preview": "vite preview",
 		"watch": "vite build --watch"
 	}

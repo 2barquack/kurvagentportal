@@ -1,0 +1,10 @@
+/**
+ * Card Manager Block Editor Styles
+ *
+ * @package Kurv_Knowledgebase_2026
+ * @since 1.0.0
+ */
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container {
+	min-height: 200px;
+}

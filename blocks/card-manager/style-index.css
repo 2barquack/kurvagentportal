@@ -1,0 +1,74 @@
+/**
+ * Card Manager Block Styles
+ *
+ * @package Kurv_Knowledgebase_2026
+ * @since 1.0.0
+ */
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-wrapper {
+	padding: 4rem 2rem;
+	background-color: #f0f7f0;
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-heading {
+	text-align: center;
+	margin-bottom: 3rem;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+	font-weight: 700;
+	font-size: clamp(1.5rem, 4vw, 2.5rem);
+	color: #1a1a1a;
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .heading-line {
+	display: block;
+	width: 60px;
+	height: 2px;
+	background-color: #2d5016;
+	flex-shrink: 0;
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .heading-text {
+	white-space: nowrap;
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container {
+	display: grid;
+	gap: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="1"] {
+	grid-template-columns: 1fr;
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="2"] {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="3"] {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="4"] {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+	.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="3"],
+	.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="4"] {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="2"],
+	.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="3"],
+	.wp-block-kurv-knowledgebase-2026-card-manager .card-manager-container[data-columns="4"] {
+		grid-template-columns: 1fr;
+	}
+}

@@ -1,0 +1,16 @@
+/**
+ * Card Item Block Editor Styles
+ *
+ * @package Kurv_Knowledgebase_2026
+ * @since 1.0.0
+ */
+
+@import './style.scss';
+
+// Editor-specific styles
+.wp-block-kurv-knowledgebase-2026-card-item {
+	.card-item {
+		// Ensure proper spacing in editor
+		min-height: 150px;
+	}
+}
