@@ -13,7 +13,7 @@ import { readdirSync, statSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const blocksDir = resolve(__dirname, 'blocks');
+const blocksDir = __dirname;
 
 // Get all block directories
 const blocks = readdirSync(blocksDir).filter((file) => {
@@ -63,6 +63,11 @@ for (const block of blocks) {
 					scss: {
 						additionalData: `@import "${resolve(srcPath, 'scss/style.scss')}";`,
 					},
+				},
+			},
+			resolve: {
+				alias: {
+					'@': srcPath,
 				},
 			},
 		});
