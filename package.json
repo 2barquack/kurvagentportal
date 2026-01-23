@@ -10,9 +10,9 @@
 		"Theme"
 	],
 	"bugs": {
-		"url": "https://github.com/2barquack/kurvknowledgebase/issues"
+		"url": "https://github.com/2barquack/kurvagentportal/issues"
 	},
-	"homepage": "https://github.com/2barquack/kurvknowledgebase",
+	"homepage": "https://github.com/2barquack/kurvagentportal",
 	"engines": {
 		"node": ">=20.10.0",
 		"npm": ">=10.2.3"
