@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Vite build artifacts
+dist/
+.vite/
+
+# Source maps (optional - uncomment if you want to ignore them)
+# *.map
+
+# Note: style.css, style.min.css, and assets/js/main.js are tracked in git
+# as they are required by WordPress
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local

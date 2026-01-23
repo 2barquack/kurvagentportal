@@ -1,0 +1,49 @@
+=== Contributing to Kurv Knowledgebase 2026 ===
+
+= Development Setup with Vite =
+
+Kurv Knowledgebase 2026 uses Vite for fast development and optimized production builds. The theme has source files in the `src/` directory that are compiled to the theme root.
+
+Installation instructions
+
+1. Using a command line interface, navigate to the theme directory:
+   `cd /path/to/wp-content/themes/kurv-knowledgebase-2026`
+
+2. Install dependencies:
+   `npm install`
+
+3. The dependencies may take a few minutes to download but once it completes, you're ready to develop.
+
+Development workflow
+
+1. **Development mode** (with hot module replacement):
+   `npm run dev`
+   
+   This starts the Vite development server with hot module replacement. Changes to files in `src/` will be automatically reflected in the browser.
+
+2. **Production build**:
+   `npm run build`
+   
+   This creates optimized, minified production builds:
+   - `style.css` and `style.min.css` in the theme root
+   - `assets/css/editor-style.css` and `assets/css/editor-style.min.css`
+   - `assets/js/main.js` (minified in production)
+
+3. **Watch mode** (build on file changes):
+   `npm run watch`
+   
+   This watches for changes and automatically rebuilds without starting a dev server.
+
+File structure
+
+- `src/css/` - Source CSS files
+- `src/js/` - Source JavaScript files
+- `src/assets/` - Source assets (images, fonts, etc.)
+- Theme root - Compiled output files
+
+Important notes
+
+- Always edit files in the `src/` directory, not the compiled output files
+- The compiled `style.css` and `style.min.css` files are generated automatically
+- Use the Site Editor's "Additional CSS" feature for customizations when possible
+- Source maps are generated in development mode for easier debugging
