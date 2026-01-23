@@ -10,6 +10,15 @@
 		padding: 4rem 2rem;
 		background-color: #f0f7f0; // Light green background (default)
 		
+		// Mobile padding adjustments
+		@media (max-width: 768px) {
+			padding: 3rem 1.5rem;
+		}
+		
+		@media (max-width: 480px) {
+			padding: 2rem 1rem;
+		}
+		
 		// Make background transparent when inside a group block
 		.wp-block-group & {
 			background-color: transparent;
@@ -35,10 +44,20 @@
 				height: 2px;
 				background-color: #2d5016; // Dark green
 				flex-shrink: 0;
+				
+				// Hide lines on very small screens for better readability
+				@media (max-width: 480px) {
+					display: none;
+				}
 			}
 			
 			.heading-text {
 				white-space: nowrap;
+				
+				// Allow wrapping on small screens
+				@media (max-width: 480px) {
+					white-space: normal;
+				}
 			}
 		}
 		
@@ -50,6 +69,13 @@
 			color: #4a4a4a;
 			font-size: 1rem;
 			line-height: 1.6;
+			padding: 0 1rem;
+			
+			// Better spacing on mobile
+			@media (max-width: 768px) {
+				margin-bottom: 2rem;
+				font-size: 0.9375rem;
+			}
 		}
 		
 		// Card container
@@ -58,6 +84,15 @@
 			gap: 2rem;
 			max-width: 1200px;
 			margin: 0 auto;
+			
+			// Mobile gap adjustments
+			@media (max-width: 768px) {
+				gap: 1.5rem;
+			}
+			
+			@media (max-width: 480px) {
+				gap: 1rem;
+			}
 			
 			// Responsive columns
 			&[data-columns="1"] {
