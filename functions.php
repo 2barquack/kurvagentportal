@@ -160,6 +160,27 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_pattern_categories' ) ) :
 endif;
 add_action( 'init', 'kurv_knowledgebase_2026_pattern_categories' );
 
+// Prevent WordPress auto-discovery from interfering with our explicit pattern registration.
+// We handle pattern registration explicitly to ensure proper category assignment and block availability.
+add_filter( 'theme_block_pattern_files', function( $files, $dirpath ) {
+	// Remove our custom patterns from auto-discovery - we register them explicitly
+	$our_patterns = array(
+		'core-platform-capabilities.php',
+		'application-pipeline-management.php',
+		'portfolio-navigation-monitoring.php',
+		'residual-projection-revenue-tracking.php',
+	);
+	
+	foreach ( $our_patterns as $pattern_file ) {
+		$key = array_search( $pattern_file, $files, true );
+		if ( false !== $key ) {
+			unset( $files[ $key ] );
+		}
+	}
+	
+	return $files;
+}, 10, 2 );
+
 // Registers custom block patterns.
 if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 	/**
