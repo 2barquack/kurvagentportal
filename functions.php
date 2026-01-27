@@ -302,6 +302,40 @@ endif;
 // Register patterns after blocks are registered (priority 20 ensures blocks are loaded first)
 add_action( 'init', 'kurv_knowledgebase_2026_register_patterns', 20 );
 
+// Temporary debug: Show pattern registration status in admin (remove after testing)
+if ( defined( 'WP_DEBUG' ) && WP_DEBUG && is_admin() ) {
+	add_action( 'admin_notices', function() {
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return;
+		}
+		
+		$registry = WP_Block_Patterns_Registry::get_instance();
+		$our_patterns = array(
+			'kurv-knowledgebase-2026/core-platform-capabilities',
+			'kurv-knowledgebase-2026/application-pipeline-management',
+			'kurv-knowledgebase-2026/portfolio-navigation-monitoring',
+			'kurv-knowledgebase-2026/residual-projection-revenue-tracking',
+		);
+		
+		$registered = array();
+		$missing = array();
+		
+		foreach ( $our_patterns as $slug ) {
+			if ( $registry->is_registered( $slug ) ) {
+				$registered[] = $slug;
+			} else {
+				$missing[] = $slug;
+			}
+		}
+		
+		if ( ! empty( $missing ) ) {
+			echo '<div class="notice notice-error"><p><strong>Pattern Registration Debug:</strong> Missing patterns: ' . esc_html( implode( ', ', $missing ) ) . '</p></div>';
+		} else {
+			echo '<div class="notice notice-success is-dismissible"><p><strong>Pattern Registration Debug:</strong> All 4 patterns are registered successfully!</p></div>';
+		}
+	} );
+}
+
 // Registers block binding sources.
 if ( ! function_exists( 'kurv_knowledgebase_2026_register_block_bindings' ) ) :
 	/**
