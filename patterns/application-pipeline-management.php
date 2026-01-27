@@ -2,7 +2,7 @@
 /**
  * Title: Application & Pipeline Management
  * Slug: kurv-knowledgebase-2026/application-pipeline-management
- * Categories: kurv_knowledgebase_2026_page
+ * Categories: kb-patterns
  * Description: A four-column card layout showcasing application and pipeline management features with an introductory paragraph.
  *
  * @package Kurv_Knowledgebase_2026

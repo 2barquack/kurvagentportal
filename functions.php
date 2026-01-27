@@ -134,6 +134,14 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_pattern_categories' ) ) :
 	function kurv_knowledgebase_2026_pattern_categories() {
 
 		register_block_pattern_category(
+			'kb-patterns',
+			array(
+				'label'       => __( 'KB-Patterns', 'kurv-knowledgebase-2026' ),
+				'description' => __( 'Custom patterns for Kurv Knowledgebase 2026 theme.', 'kurv-knowledgebase-2026' ),
+			)
+		);
+
+		register_block_pattern_category(
 			'kurv_knowledgebase_2026_page',
 			array(
 				'label'       => __( 'Pages', 'kurv-knowledgebase-2026' ),

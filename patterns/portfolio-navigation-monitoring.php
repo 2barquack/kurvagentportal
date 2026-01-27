@@ -2,7 +2,7 @@
 /**
  * Title: Portfolio Navigation & Monitoring
  * Slug: kurv-knowledgebase-2026/portfolio-navigation-monitoring
- * Categories: kurv_knowledgebase_2026_page
+ * Categories: kb-patterns
  * Description: A four-column card layout showcasing portfolio navigation and monitoring features with an introductory paragraph.
  *
  * @package Kurv_Knowledgebase_2026

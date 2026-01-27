@@ -2,7 +2,7 @@
 /**
  * Title: Residual Projection & Revenue Tracking
  * Slug: kurv-knowledgebase-2026/residual-projection-revenue-tracking
- * Categories: kurv_knowledgebase_2026_page
+ * Categories: kb-patterns
  * Description: A four-column card layout showcasing residual projection and revenue tracking features with an introductory paragraph.
  *
  * @package Kurv_Knowledgebase_2026

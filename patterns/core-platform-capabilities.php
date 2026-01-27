@@ -2,7 +2,7 @@
 /**
  * Title: Core Platform Capabilities
  * Slug: kurv-knowledgebase-2026/core-platform-capabilities
- * Categories: kurv_knowledgebase_2026_page
+ * Categories: kb-patterns
  * Description: A three-column card layout showcasing core platform capabilities with icons, titles, and descriptions.
  *
  * @package Kurv_Knowledgebase_2026
