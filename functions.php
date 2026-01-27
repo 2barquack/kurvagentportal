@@ -160,6 +160,72 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_pattern_categories' ) ) :
 endif;
 add_action( 'init', 'kurv_knowledgebase_2026_pattern_categories' );
 
+// Registers custom block patterns.
+if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
+	/**
+	 * Registers custom block patterns.
+	 *
+	 * @since Kurv Knowledgebase 2026 1.0
+	 *
+	 * @return void
+	 */
+	function kurv_knowledgebase_2026_register_patterns() {
+		$patterns = array(
+			'core-platform-capabilities',
+			'application-pipeline-management',
+			'portfolio-navigation-monitoring',
+			'residual-projection-revenue-tracking',
+		);
+
+		foreach ( $patterns as $pattern ) {
+			$pattern_file = get_template_directory() . '/patterns/' . $pattern . '.php';
+			
+			if ( file_exists( $pattern_file ) ) {
+				// Read file content
+				$file_content = file_get_contents( $pattern_file );
+				
+				// Extract metadata from file header
+				$pattern_data = get_file_data(
+					$pattern_file,
+					array(
+						'title'       => 'Title',
+						'slug'        => 'Slug',
+						'description' => 'Description',
+						'categories'  => 'Categories',
+					)
+				);
+
+				if ( ! empty( $pattern_data['title'] ) && ! empty( $pattern_data['slug'] ) ) {
+					// Extract block markup content (everything after the closing ?>)
+					$pattern_content = '';
+					if ( preg_match( '/\?>\s*(.*)/s', $file_content, $matches ) ) {
+						$pattern_content = trim( $matches[1] );
+					}
+
+					// Parse categories
+					$categories = array();
+					if ( ! empty( $pattern_data['categories'] ) ) {
+						$category_list = array_map( 'trim', explode( ',', $pattern_data['categories'] ) );
+						$categories = $category_list;
+					}
+
+					// Register the pattern
+					register_block_pattern(
+						$pattern_data['slug'],
+						array(
+							'title'       => $pattern_data['title'],
+							'description' => ! empty( $pattern_data['description'] ) ? $pattern_data['description'] : '',
+							'content'     => $pattern_content,
+							'categories'  => $categories,
+						)
+					);
+				}
+			}
+		}
+	}
+endif;
+add_action( 'init', 'kurv_knowledgebase_2026_register_patterns', 20 );
+
 // Registers block binding sources.
 if ( ! function_exists( 'kurv_knowledgebase_2026_register_block_bindings' ) ) :
 	/**
