@@ -164,12 +164,18 @@ add_action( 'init', 'kurv_knowledgebase_2026_pattern_categories' );
 if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 	/**
 	 * Registers custom block patterns.
+	 * 
+	 * Note: WordPress auto-discovers patterns from /patterns directory,
+	 * but we explicitly register our custom patterns to ensure they work
+	 * correctly with our custom blocks and categories.
 	 *
 	 * @since Kurv Knowledgebase 2026 1.0
 	 *
 	 * @return void
 	 */
 	function kurv_knowledgebase_2026_register_patterns() {
+		$registry = WP_Block_Patterns_Registry::get_instance();
+		
 		$patterns = array(
 			'core-platform-capabilities',
 			'application-pipeline-management',
@@ -180,50 +186,79 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 		foreach ( $patterns as $pattern ) {
 			$pattern_file = get_template_directory() . '/patterns/' . $pattern . '.php';
 			
-			if ( file_exists( $pattern_file ) ) {
-				// Read file content
-				$file_content = file_get_contents( $pattern_file );
-				
-				// Extract metadata from file header
-				$pattern_data = get_file_data(
-					$pattern_file,
-					array(
-						'title'       => 'Title',
-						'slug'        => 'Slug',
-						'description' => 'Description',
-						'categories'  => 'Categories',
-					)
-				);
-
-				if ( ! empty( $pattern_data['title'] ) && ! empty( $pattern_data['slug'] ) ) {
-					// Extract block markup content (everything after the closing ?>)
-					$pattern_content = '';
-					if ( preg_match( '/\?>\s*(.*)/s', $file_content, $matches ) ) {
-						$pattern_content = trim( $matches[1] );
-					}
-
-					// Parse categories
-					$categories = array();
-					if ( ! empty( $pattern_data['categories'] ) ) {
-						$category_list = array_map( 'trim', explode( ',', $pattern_data['categories'] ) );
-						$categories = $category_list;
-					}
-
-					// Register the pattern
-					register_block_pattern(
-						$pattern_data['slug'],
-						array(
-							'title'       => $pattern_data['title'],
-							'description' => ! empty( $pattern_data['description'] ) ? $pattern_data['description'] : '',
-							'content'     => $pattern_content,
-							'categories'  => $categories,
-						)
-					);
-				}
+			if ( ! file_exists( $pattern_file ) ) {
+				continue;
 			}
+
+			// Read file content
+			$file_content = file_get_contents( $pattern_file );
+			
+			// Extract metadata from file header using WordPress standard headers
+			$pattern_data = get_file_data(
+				$pattern_file,
+				array(
+					'title'       => 'Title',
+					'slug'        => 'Slug',
+					'description' => 'Description',
+					'categories'  => 'Categories',
+					'inserter'    => 'Inserter',
+				)
+			);
+
+			// Validate required fields
+			if ( empty( $pattern_data['title'] ) || empty( $pattern_data['slug'] ) ) {
+				continue;
+			}
+
+			// Extract block markup content (everything after the closing ?>)
+			$pattern_content = '';
+			if ( preg_match( '/\?>\s*(.*)/s', $file_content, $matches ) ) {
+				$pattern_content = trim( $matches[1] );
+			}
+
+			// Skip if no content found
+			if ( empty( $pattern_content ) ) {
+				continue;
+			}
+
+			// Parse categories - ensure kb-patterns is included
+			$categories = array();
+			if ( ! empty( $pattern_data['categories'] ) ) {
+				$category_list = array_map( 'trim', explode( ',', $pattern_data['categories'] ) );
+				$categories = array_filter( $category_list ); // Remove empty values
+			}
+			
+			// Ensure kb-patterns category is always included
+			if ( ! in_array( 'kb-patterns', $categories, true ) ) {
+				$categories[] = 'kb-patterns';
+			}
+
+			// Check inserter setting (default to true if not specified)
+			$inserter = true;
+			if ( ! empty( $pattern_data['inserter'] ) ) {
+				$inserter = filter_var( $pattern_data['inserter'], FILTER_VALIDATE_BOOLEAN );
+			}
+
+			// Unregister if already registered (from auto-discovery or previous registration)
+			if ( $registry->is_registered( $pattern_data['slug'] ) ) {
+				unregister_block_pattern( $pattern_data['slug'] );
+			}
+
+			// Register the pattern with all required properties
+			register_block_pattern(
+				$pattern_data['slug'],
+				array(
+					'title'       => $pattern_data['title'],
+					'description' => ! empty( $pattern_data['description'] ) ? $pattern_data['description'] : '',
+					'content'     => $pattern_content,
+					'categories'  => $categories,
+					'inserter'    => $inserter,
+				)
+			);
 		}
 	}
 endif;
+// Register patterns after blocks are registered (priority 20 ensures blocks are loaded first)
 add_action( 'init', 'kurv_knowledgebase_2026_register_patterns', 20 );
 
 // Registers block binding sources.
@@ -287,4 +322,5 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_register_blocks' ) ) :
 		}
 	}
 endif;
-add_action( 'init', 'kurv_knowledgebase_2026_register_blocks' );
+// Register blocks early (priority 9) so they're available when patterns register (priority 20)
+add_action( 'init', 'kurv_knowledgebase_2026_register_blocks', 9 );
