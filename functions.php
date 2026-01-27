@@ -302,39 +302,100 @@ endif;
 // Register patterns after blocks are registered (priority 20 ensures blocks are loaded first)
 add_action( 'init', 'kurv_knowledgebase_2026_register_patterns', 20 );
 
-// Temporary debug: Show pattern registration status in admin (remove after testing)
-if ( defined( 'WP_DEBUG' ) && WP_DEBUG && is_admin() ) {
-	add_action( 'admin_notices', function() {
-		if ( ! current_user_can( 'edit_posts' ) ) {
+// Debug: Show pattern and block registration status in admin
+// This helps verify that patterns and blocks are properly registered
+add_action( 'admin_notices', function() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	
+	// Only show in debug mode or when ?debug_patterns=1 is in URL
+	if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+		if ( ! isset( $_GET['debug_patterns'] ) || '1' !== $_GET['debug_patterns'] ) {
 			return;
 		}
-		
-		$registry = WP_Block_Patterns_Registry::get_instance();
-		$our_patterns = array(
-			'kurv-knowledgebase-2026/core-platform-capabilities',
-			'kurv-knowledgebase-2026/application-pipeline-management',
-			'kurv-knowledgebase-2026/portfolio-navigation-monitoring',
-			'kurv-knowledgebase-2026/residual-projection-revenue-tracking',
-		);
-		
-		$registered = array();
-		$missing = array();
-		
-		foreach ( $our_patterns as $slug ) {
-			if ( $registry->is_registered( $slug ) ) {
-				$registered[] = $slug;
-			} else {
-				$missing[] = $slug;
-			}
-		}
-		
-		if ( ! empty( $missing ) ) {
-			echo '<div class="notice notice-error"><p><strong>Pattern Registration Debug:</strong> Missing patterns: ' . esc_html( implode( ', ', $missing ) ) . '</p></div>';
+	}
+	
+	$registry = WP_Block_Patterns_Registry::get_instance();
+	$our_patterns = array(
+		'kurv-knowledgebase-2026/core-platform-capabilities',
+		'kurv-knowledgebase-2026/application-pipeline-management',
+		'kurv-knowledgebase-2026/portfolio-navigation-monitoring',
+		'kurv-knowledgebase-2026/residual-projection-revenue-tracking',
+	);
+	
+	$registered_patterns = array();
+	$missing_patterns = array();
+	
+	foreach ( $our_patterns as $slug ) {
+		if ( $registry->is_registered( $slug ) ) {
+			$pattern_data = $registry->get_registered( $slug );
+			$registered_patterns[] = array(
+				'slug' => $slug,
+				'title' => isset( $pattern_data['title'] ) ? $pattern_data['title'] : 'Unknown',
+				'categories' => isset( $pattern_data['categories'] ) ? $pattern_data['categories'] : array(),
+				'inserter' => isset( $pattern_data['inserter'] ) ? $pattern_data['inserter'] : true,
+			);
 		} else {
-			echo '<div class="notice notice-success is-dismissible"><p><strong>Pattern Registration Debug:</strong> All 4 patterns are registered successfully!</p></div>';
+			$missing_patterns[] = $slug;
 		}
-	} );
-}
+	}
+	
+	// Check block registration
+	$block_registry = WP_Block_Type_Registry::get_instance();
+	$our_blocks = array(
+		'kurv-knowledgebase-2026/card-manager',
+		'kurv-knowledgebase-2026/card-item',
+	);
+	
+	$registered_blocks = array();
+	$missing_blocks = array();
+	
+	foreach ( $our_blocks as $block_name ) {
+		if ( $block_registry->is_registered( $block_name ) ) {
+			$registered_blocks[] = $block_name;
+		} else {
+			$missing_blocks[] = $block_name;
+		}
+	}
+	
+	// Display debug information
+	echo '<div class="notice notice-info" style="padding: 15px;">';
+	echo '<h3 style="margin-top: 0;">Pattern & Block Registration Debug</h3>';
+	
+	// Patterns status
+	if ( ! empty( $missing_patterns ) ) {
+		echo '<p style="color: #d63638;"><strong>❌ Missing Patterns:</strong> ' . esc_html( implode( ', ', $missing_patterns ) ) . '</p>';
+	} else {
+		echo '<p style="color: #00a32a;"><strong>✅ All 4 patterns registered successfully!</strong></p>';
+	}
+	
+	if ( ! empty( $registered_patterns ) ) {
+		echo '<details style="margin-top: 10px;"><summary style="cursor: pointer; font-weight: bold;">Registered Patterns Details</summary><ul style="margin-left: 20px;">';
+		foreach ( $registered_patterns as $pattern ) {
+			echo '<li>';
+			echo '<strong>' . esc_html( $pattern['title'] ) . '</strong> (' . esc_html( $pattern['slug'] ) . ')<br>';
+			echo 'Categories: ' . esc_html( implode( ', ', $pattern['categories'] ) ) . '<br>';
+			echo 'Inserter: ' . ( $pattern['inserter'] ? '✅ Enabled' : '❌ Disabled' );
+			echo '</li>';
+		}
+		echo '</ul></details>';
+	}
+	
+	// Blocks status
+	if ( ! empty( $missing_blocks ) ) {
+		echo '<p style="color: #d63638; margin-top: 15px;"><strong>❌ Missing Blocks:</strong> ' . esc_html( implode( ', ', $missing_blocks ) ) . '</p>';
+	} else {
+		echo '<p style="color: #00a32a; margin-top: 15px;"><strong>✅ All 2 blocks registered successfully!</strong></p>';
+	}
+	
+	if ( ! empty( $registered_blocks ) ) {
+		echo '<p style="margin-top: 10px;">Registered Blocks: ' . esc_html( implode( ', ', $registered_blocks ) ) . '</p>';
+	}
+	
+	echo '<p style="margin-top: 15px; font-size: 12px; color: #666;">To hide this notice, disable WP_DEBUG or remove ?debug_patterns=1 from URL</p>';
+	echo '</div>';
+} );
 
 // Registers block binding sources.
 if ( ! function_exists( 'kurv_knowledgebase_2026_register_block_bindings' ) ) :
