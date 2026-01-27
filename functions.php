@@ -181,6 +181,25 @@ add_filter( 'theme_block_pattern_files', function( $files, $dirpath ) {
 	return $files;
 }, 10, 2 );
 
+// Clear pattern cache on theme activation/update and on init (for development)
+add_action( 'after_switch_theme', function() {
+	$theme = wp_get_theme();
+	if ( method_exists( $theme, 'delete_pattern_cache' ) ) {
+		$theme->delete_pattern_cache();
+	}
+} );
+
+// Clear pattern cache on init (helps during development when patterns aren't showing)
+add_action( 'init', function() {
+	// Only clear cache if WP_DEBUG is enabled (development mode)
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		$theme = wp_get_theme();
+		if ( method_exists( $theme, 'delete_pattern_cache' ) ) {
+			$theme->delete_pattern_cache();
+		}
+	}
+}, 1 );
+
 // Registers custom block patterns.
 if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 	/**
@@ -257,7 +276,8 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 			// Check inserter setting (default to true if not specified)
 			$inserter = true;
 			if ( ! empty( $pattern_data['inserter'] ) ) {
-				$inserter = filter_var( $pattern_data['inserter'], FILTER_VALIDATE_BOOLEAN );
+				$inserter_val = strtolower( trim( $pattern_data['inserter'] ) );
+				$inserter = in_array( $inserter_val, array( 'true', '1', 'yes' ), true );
 			}
 
 			// Unregister if already registered (from auto-discovery or previous registration)
@@ -266,7 +286,7 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 			}
 
 			// Register the pattern with all required properties
-			register_block_pattern(
+			$result = register_block_pattern(
 				$pattern_data['slug'],
 				array(
 					'title'       => $pattern_data['title'],
