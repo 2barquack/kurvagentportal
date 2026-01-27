@@ -215,12 +215,9 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_register_blocks' ) ) :
 		);
 
 		foreach ( $blocks as $block ) {
-			register_block_type(
-				get_template_directory() . '/blocks/' . $block,
-				array(
-					'render_callback' => null,
-				)
-			);
+			// Register as static block (no render_callback)
+			// The block.json and save function handle rendering
+			register_block_type( get_template_directory() . '/blocks/' . $block );
 		}
 	}
 endif;
