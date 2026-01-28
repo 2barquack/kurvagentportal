@@ -286,7 +286,7 @@ if ( ! function_exists( 'kurv_knowledgebase_2026_register_patterns' ) ) :
 			}
 
 			// Register the pattern with all required properties
-			$result = register_block_pattern(
+			register_block_pattern(
 				$pattern_data['slug'],
 				array(
 					'title'       => $pattern_data['title'],
